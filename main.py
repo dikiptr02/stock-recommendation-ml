@@ -6,10 +6,12 @@ Pipeline utama project Stock Recommendation ML v1.0.1.
 Tahap yang sudah berjalan:
 1. Data Collection: Mengambil data historis saham menggunakan yfinance.
 2. Data Preprocessing: Membersihkan data historis saham.
+3. Feature Engineering: Membuat fitur machine learning dari data historis saham yang sudah dibersihkan.
 """
 
 from src.data_collection import download_stock_data
 from src.preprocessing import preprocess_stock_data
+from src.feature_engineering import create_features
 
 
 def main() -> None:
@@ -38,6 +40,7 @@ def main() -> None:
 
     clean_ticker_name = ticker.replace(".", "_")
     raw_file_path = f"data/raw/{clean_ticker_name}_raw.csv"
+    clean_file_path = f"data/processed/{clean_ticker_name}_clean.csv"
 
     print("\n[2] Data Preprocessing")
     clean_data = preprocess_stock_data(
@@ -48,8 +51,17 @@ def main() -> None:
     print("\nPreview data bersih:")
     print(clean_data.head())
 
-    print("\nInformasi data bersih:")
-    print(clean_data.info())
+    print("\n[3] Feature Engineering")
+    feature_data = create_features(
+        input_path=clean_file_path,
+        output_dir="data/processed",
+    )
+
+    print("\nPreview data dengan fitur:")
+    print(feature_data.head())
+
+    print("\nKolom akhir:")
+    print(feature_data.columns.tolist())
 
     print("\nPipeline selesai dijalankan.")
 
