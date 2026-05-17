@@ -12,6 +12,7 @@ Output:
 
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 REQUIRED_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Volume"]
@@ -39,8 +40,8 @@ def calculate_rsi(data: pd.DataFrame, window: int = 14) -> pd.Series:
 
     delta = data["Close"].diff()
 
-    gain = delta.where(delta > 0, 0)
-    loss = delta.where(delta < 0, 0)
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
 
     avg_gain = gain.rolling(window=window).mean()
     avg_loss = loss.rolling(window=window).mean()
@@ -114,6 +115,9 @@ def create_features(
 
     # 6. Volume Change
     data["Volume_Change"] = data["Volume"].pct_change()
+
+    # Ganti infinity menjadi NaN agar bisa dibersihkan
+    data = data.replace([np.inf, -np.inf], np.nan)
 
     # Hapus baris yang memiliki missing value akibat rolling calculation
     data = data.dropna().reset_index(drop=True)
