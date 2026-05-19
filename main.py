@@ -9,6 +9,7 @@ Tahap yang sudah berjalan:
 3. Feature Engineering: Membuat fitur machine learning dari data historis saham yang sudah dibersihkan.
 4. Labeling: Membuat label Buy, Hold, Sell berdasarkan return masa depan.
 5. Training Model: Melatih model machine learning untuk merekomendasikan saham Buy, Hold, atau Sell.
+6. Evaluation Model: Mengevaluasi performa model menggunakan metrik akurasi, precision, recall, dan F1-score.
 """
 
 from src.data_collection import download_stock_data
@@ -16,6 +17,7 @@ from src.preprocessing import preprocess_stock_data
 from src.feature_engineering import create_features
 from src.labeling import create_labels
 from src.train_model import train_model
+from src.evaluate_model import evaluate_model
 
 
 def main() -> None:
@@ -38,6 +40,7 @@ def main() -> None:
     features_file_path = f"data/processed/{clean_ticker_name}_features.csv"
     labeled_file_path = f"data/processed/{clean_ticker_name}_labeled.csv"
     model_output_path = "models/stock_model_v1.0.1.pkl"
+    report_output_path = "reports/evaluation_v1.0.1.md"
 
     print("\n[1] Data Collection")
     raw_data = download_stock_data(
@@ -91,6 +94,18 @@ def main() -> None:
     print(f"Version          : {training_summary['version']}")
     print(f"Model terbaik    : {training_summary['best_model_name']}")
     print(f"Model disimpan di: {training_summary['model_output_path']}")
+
+    print("\n[6] Evaluation Model")
+    evaluation_results = evaluate_model(
+        data_path=labeled_file_path,
+        model_path=model_output_path,
+        report_output_path=report_output_path,
+        test_size=0.2,
+    )
+
+    print("\nRingkasan evaluasi:")
+    print(f"Accuracy : {evaluation_results['accuracy']:.4f}")
+    print(f"F1 Macro : {evaluation_results['f1_macro']:.4f}")
 
     print("\nPipeline berhasil dijalankan.")
 
