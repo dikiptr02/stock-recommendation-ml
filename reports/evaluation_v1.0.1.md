@@ -24,57 +24,57 @@ Data dibagi menggunakan **time-based split**, yaitu data lama sebagai training d
 
 | Dataset | Jumlah Data | Periode |
 |---|---:|---|
-| Training | 1587 | 2018-01-29 sampai 2024-09-02 |
-| Testing | 397 | 2024-09-03 sampai 2026-05-07 |
+| Training | 1588 | 2018-01-29 sampai 2024-09-03 |
+| Testing | 397 | 2024-09-04 sampai 2026-05-08 |
 
 ## 4. Distribusi Label Aktual pada Data Testing
 
 | Recommendation   |   count |
 |:-----------------|--------:|
-| Hold             |     196 |
-| Sell             |     132 |
+| Hold             |     195 |
+| Sell             |     133 |
 | Buy              |      69 |
 
 ## 5. Distribusi Prediksi Model pada Data Testing
 
 |      |   count |
 |:-----|--------:|
-| Hold |     323 |
-| Buy  |      46 |
-| Sell |      28 |
+| Hold |     330 |
+| Buy  |      41 |
+| Sell |      26 |
 
 ## 6. Evaluation Metrics
 
 | Metric | Score |
 |---|---:|
-| Accuracy | 0.4509 |
-| Precision Macro | 0.3478 |
-| Recall Macro | 0.3540 |
-| F1 Macro | 0.3133 |
-| Precision Weighted | 0.3775 |
-| Recall Weighted | 0.4509 |
-| F1 Weighted | 0.3720 |
+| Accuracy | 0.4559 |
+| Precision Macro | 0.3367 |
+| Recall Macro | 0.3462 |
+| F1 Macro | 0.2982 |
+| Precision Weighted | 0.3767 |
+| Recall Weighted | 0.4559 |
+| F1 Weighted | 0.3680 |
 
 ## 7. Classification Report
 
               precision    recall  f1-score   support
 
-         Buy       0.30      0.20      0.24        69
-        Hold       0.49      0.81      0.61       196
-        Sell       0.25      0.05      0.09       132
+         Buy       0.24      0.14      0.18        69
+        Hold       0.50      0.84      0.62       195
+        Sell       0.27      0.05      0.09       133
 
-    accuracy                           0.45       397
-   macro avg       0.35      0.35      0.31       397
-weighted avg       0.38      0.45      0.37       397
+    accuracy                           0.46       397
+   macro avg       0.34      0.35      0.30       397
+weighted avg       0.38      0.46      0.37       397
 
 
 ## 8. Confusion Matrix
 
 |             |   Predicted Buy |   Predicted Hold |   Predicted Sell |
 |:------------|----------------:|-----------------:|-----------------:|
-| Actual Buy  |              14 |               48 |                7 |
-| Actual Hold |              24 |              158 |               14 |
-| Actual Sell |               8 |              117 |                7 |
+| Actual Buy  |              10 |               52 |                7 |
+| Actual Hold |              19 |              164 |               12 |
+| Actual Sell |              12 |              114 |                7 |
 
 ## 9. Interpretasi Singkat
 

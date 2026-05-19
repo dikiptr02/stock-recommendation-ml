@@ -18,6 +18,7 @@ from src.feature_engineering import create_features
 from src.labeling import create_labels
 from src.train_model import train_model
 from src.evaluate_model import evaluate_model
+from src.predict import run_prediction
 
 
 def main() -> None:
@@ -41,6 +42,7 @@ def main() -> None:
     labeled_file_path = f"data/processed/{clean_ticker_name}_labeled.csv"
     model_output_path = "models/stock_model_v1.0.1.pkl"
     report_output_path = "reports/evaluation_v1.0.1.md"
+    prediction_report_path = "reports/prediction_v1.0.1.md"
 
     print("\n[1] Data Collection")
     raw_data = download_stock_data(
@@ -106,6 +108,17 @@ def main() -> None:
     print("\nRingkasan evaluasi:")
     print(f"Accuracy : {evaluation_results['accuracy']:.4f}")
     print(f"F1 Macro : {evaluation_results['f1_macro']:.4f}")
+
+    print("\n[7] Prediction")
+    prediction_result = run_prediction(
+        model_path=model_output_path,
+        feature_data_path=features_file_path,
+        report_output_path=prediction_report_path,
+    )
+
+    print("\nRingkasan prediksi:")
+    print(f"Tanggal data terbaru : {prediction_result['date'].date()}")
+    print(f"Rekomendasi terbaru  : {prediction_result['recommendation']}")
 
     print("\nPipeline berhasil dijalankan.")
 
