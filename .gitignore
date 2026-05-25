@@ -2,6 +2,7 @@
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
 # Virtual environment
 .venv/
@@ -10,15 +11,18 @@ venv/
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Data files
-data/raw/*.csv
-data/processed/*.csv
-
-# Model files
-models/*.pkl
-
 # Environment files
 .env
 
 # VS Code settings
 .vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Raw data
+data/raw/*.csv
