@@ -11,7 +11,7 @@ router = APIRouter(
 @router.get(
         "/model-info",
         summary="Get model information",
-        description="Endpoint untul mengecek informasi model yang digunakan oleh Prediction API.",
+        description="Endpoint untuk mengecek informasi model yang digunakan oleh Prediction API.",
 )
 def get_model_info():
     """
@@ -46,17 +46,30 @@ def predict_stock(request: PredictionRequest):
     
     Pada Tahap 2, service model loader sudah tersedia.
     Logic prediksi penuh akan diaktifkan pada Tahap 3.
+
+    Alur:
+    1. Menerima input JSON dari user.
+    2. Validasi otomatis oleh Pydantic.
+    3. Mengubah request menjadi dictionary.
+    4. Mengirim input ke model_loader.predict().
+    5. Mengembalikan hasil prediksi, confidence, dan probabilitas.
     """
 
     try:
-        model_loader.ensure_model_loaded()
+        input_data = (
+            request.model_dump()
+            if hasattr(request, "model_dump")
+            else request.dict()
+        )
+
+        prediction_result = model_loader.predict(input_data)
 
         return PredictionResponse(
             status="success",
-            message="Model loader is ready. Prediction logic will be finalized in the next stage.",
-            prediction=None,
-            confidence=None,
-            probabilities=None,
+            message="Prediction completed successfully.",
+            prediction=prediction_result["prediction"],
+            confidence=prediction_result["confidence"],
+            probabilities=prediction_result["probabilities"],
             model_version=model_loader.version or "v1.0.1",
     )
 
@@ -64,4 +77,10 @@ def predict_stock(request: PredictionRequest):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(error),
+        )
+    
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Prediction failed: {str(error)}",
         )

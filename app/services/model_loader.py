@@ -173,7 +173,7 @@ class StockModelLoader:
         prediction = self.model.predict(input_df)[0]
 
         response = {
-            "prediction": prediction,
+            "prediction": str(prediction),
             "confidence": None,
             "probabilities": None,
         }
