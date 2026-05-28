@@ -1,10 +1,33 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, status
+
 from app.schemas.prediction_schema import PredictionRequest, PredictionResponse
+from app.services.model_loader import ModelLoaderError, model_loader
 
 router = APIRouter(
     prefix="/api/v1",
     tags=["Prediction"],
 )
+
+@router.get(
+        "/model-info",
+        summary="Get model information",
+        description="Endpoint untul mengecek informasi model yang digunakan oleh Prediction API.",
+)
+def get_model_info():
+    """
+    Endpoint untuk mamastikan model .pkl berhsil di-load.
+    """
+    try:
+        return {
+            "status": "success",
+            "message": "Model loaded successfully.",
+            "data": model_loader.get_model_info(),
+        }
+    except ModelLoaderError as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(error),
+        )
 
 @router.post(
     "/predict",
@@ -21,14 +44,24 @@ def predict_stock(request: PredictionRequest):
     2. Input tervalidasi oleh Pydantic.
     3. Response sudah mengikuti format PredictionResponse.
     
-    Logic load model dan model.predict() akan dibuat pada tahap berikutnya.
+    Pada Tahap 2, service model loader sudah tersedia.
+    Logic prediksi penuh akan diaktifkan pada Tahap 3.
     """
 
-    return PredictionResponse(
-        status="success",
-        message="Prediction API structure is ready. Model inference will be added in the next stage.",
-        prediction=None,
-        confidence=None,
-        probabilities=None,
-        model_version="v1.0.1",
+    try:
+        model_loader.ensure_model_loaded()
+
+        return PredictionResponse(
+            status="success",
+            message="Model loader is ready. Prediction logic will be finalized in the next stage.",
+            prediction=None,
+            confidence=None,
+            probabilities=None,
+            model_version=model_loader.version or "v1.0.1",
     )
+
+    except ModelLoaderError as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(error),
+        )
