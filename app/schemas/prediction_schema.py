@@ -3,40 +3,56 @@ from pydantic import BaseModel, Field
 
 class PredictionRequest(BaseModel):
     """
-    Schema input endpoint prediksi saham.
+    Schema input untuk endpoint prediksi saham.
 
     Semua field ini harus sama dengan feature_columns
-    yang ditemukan pada model v1.0.1.
+    yang ditemukan pada model v1.0.1:
+    - Daily_Return
+    - MA_5
+    - MA_10
+    - RSI
+    - Volatility
+    - Volume_Change
     """
 
     Daily_Return: float = Field(
         ...,
-        description="Return harian saham..",
+        ge=-1.0,
+        le=1.0,
+        description="Return harian saham. Range wajar: -1.0 sampai 1.0.",
         example=0.012,
     )
     MA_5: float = Field(
         ...,
-        description="Moving average 5 hari.",
+        gt=0,
+        description="Moving average 5 hari. Harus lebih besar dari 0.",
         example=102.5,
     )
     MA_10: float = Field(
         ...,
-        description="Moving average 10 hari.",
+        gt=0,
+        description="Moving average 10 hari. Harus lebih besar dari 0.",
         example=101.8,
     )
     RSI: float = Field(
         ...,
-        description="Relative Strength Index.",
+        ge=0,
+        le=100,
+        description="Relative Strength Index. Range valid: 0 sampai 100.",
         example=55.2,
     )
     Volatility: float = Field(
         ...,
-        description="Volatilitas harga saham.",
+        ge=0,
+        le=1.0,
+        description="Volatilitas harga saham. Range wajar: 0 sampai 1.0.",
         example=0.03,
     )
     Volume_Change: float = Field(
         ...,
-        description="Perubahan volume transaksi.",
+        ge=-1.0,
+        le=10.0,
+        description="Perubahan volume transaksi. Range wajar: -1.0 sampai 10.0.",
         example=0.12,
     )
 
@@ -53,7 +69,7 @@ class PredictionResponse(BaseModel):
     message: str = Field(
         ...,
         description="Pesan singkat dari API.",
-        example="Prediction endpoint is ready.",
+        example="Prediction completed successfully.",
     )
     prediction: Optional[str] = Field(
         default=None,
@@ -63,15 +79,15 @@ class PredictionResponse(BaseModel):
     confidence: Optional[float] = Field(
         default=None,
         description="Probabilitas tertinggi dari hasil prediksi.",
-        example=0.87,
+        example=0.625,
     )
     probabilities: Optional[Dict[str, float]] = Field(
         default=None,
         description="Probabilitas untuk setiap class.",
         example={
-            "Buy": 0.87,
-            "Hold": 0.10,
-            "Sell": 0.03,
+            "Buy": 0.625,
+            "Hold": 0.325,
+            "Sell": 0.05,
         },
     )
     model_version: str = Field(

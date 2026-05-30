@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from app.routes.project_routes import router as project_router
 from app.routes.model_routes import router as model_router
@@ -11,6 +13,40 @@ app = FastAPI(
     description="Prediction API untuk rekomendasi saham Buy, Hold, atau Sell.",
     version="1.2.0",
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request, 
+    exc: RequestValidationError,
+):
+    """
+    Custom handler untuk error validasi request.
+
+    Tujuannya agar error input dari user lebih mudah dibaca.
+    """
+
+    formatted_errors = []
+
+    for error in exc.errors():
+        location = error.get("loc", [])
+        field = location[-1] if location else None
+
+        formatted_errors.append(
+            {
+                "field": field,
+                "message": error.get("msg"),
+                "value": error.get("input"),
+            }
+        )
+
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "status": "error",
+            "message": "Invalid request input.",
+            "errors": formatted_errors,
+        },
+    )
 
 @app.get("/", tags=["Root"])
 def root():

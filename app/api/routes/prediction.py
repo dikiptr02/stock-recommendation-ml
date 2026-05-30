@@ -26,7 +26,17 @@ def get_model_info():
     except ModelLoaderError as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(error),
+            detail={
+                "status": "error",
+                "message": "Failed to load model information.",
+                "error": [
+                    {
+                        "field": None,
+                        "message": str(error),
+                        "value": None,
+                    }
+                ],
+            },
         )
 
 @router.post(
@@ -76,11 +86,31 @@ def predict_stock(request: PredictionRequest):
     except ModelLoaderError as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(error),
+            detail={
+                "status": "error",
+                "message": "model prediction failed.",
+                "errors": [
+                    {
+                        "field": None,
+                        "message": str(error),
+                        "value": None,
+                    }
+                ],
+            },
         )
     
     except Exception as error:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Prediction failed: {str(error)}",
+            detail={
+                "status": "error",
+                "message": "Prediction failed.",
+                "errors": [
+                    {
+                        "field": None,
+                        "message": str(error),
+                        "value": None,
+                    }
+                ],
+            },
         )
