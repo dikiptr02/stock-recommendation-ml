@@ -16,11 +16,11 @@ Current version: v1.2.0
 
 ### Version History
 
-| Version | Fokus Pengembangan |
-|---|---|
-| v1.0.1 | Pipeline machine learning baseline untuk rekomendasi Buy, Hold, Sell |
-| v1.1.0 | Backend dokumentasi interaktif menggunakan FastAPI |
-| v1.2.0 | Prediction API untuk prediksi real-time menggunakan input user |
+| Version | Fokus Pengembangan                                                   |
+| ------- | -------------------------------------------------------------------- |
+| v1.0.1  | Pipeline machine learning baseline untuk rekomendasi Buy, Hold, Sell |
+| v1.1.0  | Backend dokumentasi interaktif menggunakan FastAPI                   |
+| v1.2.0  | Prediction API untuk prediksi real-time menggunakan input user       |
 
 ## Tujuan Project
 
@@ -179,23 +179,23 @@ app/
 
 ## Penjelasan Folder Backend
 
-| Folder | Fungsi |
-|---|---|
-| `app/main.py` | File utama aplikasi FastAPI |
-| `app/routes/` | Menyimpan endpoint API |
+| Folder          | Fungsi                                                |
+| --------------- | ----------------------------------------------------- |
+| `app/main.py`   | File utama aplikasi FastAPI                           |
+| `app/routes/`   | Menyimpan endpoint API                                |
 | `app/services/` | Menyimpan logic untuk membaca model, report, dan data |
-| `app/schemas/` | Menyimpan format response API menggunakan Pydantic |
+| `app/schemas/`  | Menyimpan format response API menggunakan Pydantic    |
 
 ## Endpoint Backend
 
-| Method | Endpoint | Deskripsi |
-|---|---|---|
-| GET | `/` | Menampilkan informasi singkat project |
-| GET | `/project-info` | Menampilkan tujuan, deskripsi, dan fitur project |
-| GET | `/docs-summary` | Menampilkan ringkasan dokumentasi project |
-| GET | `/model-info` | Menampilkan informasi model terbaik |
-| GET | `/evaluation` | Menampilkan ringkasan evaluasi model |
-| GET | `/prediction` | Menampilkan hasil prediksi terbaru |
+| Method | Endpoint        | Deskripsi                                        |
+| ------ | --------------- | ------------------------------------------------ |
+| GET    | `/`             | Menampilkan informasi singkat project            |
+| GET    | `/project-info` | Menampilkan tujuan, deskripsi, dan fitur project |
+| GET    | `/docs-summary` | Menampilkan ringkasan dokumentasi project        |
+| GET    | `/model-info`   | Menampilkan informasi model terbaik              |
+| GET    | `/evaluation`   | Menampilkan ringkasan evaluasi model             |
+| GET    | `/prediction`   | Menampilkan hasil prediksi terbaru               |
 
 ## Cara Menjalankan Backend di Local
 
@@ -359,13 +359,27 @@ Backend v1.1.0 masih memiliki beberapa keterbatasan:
 - Belum memiliki autentikasi API
 - Belum dideploy ke server/cloud
 
+---
+
+# Version v1.2.0 - Prediction API
+
+Pada versi v1.2.0, project menambahkan endpoint Prediction API yang dapat menerima input fitur teknikal dari user dan menghasilkan rekomendasi saham secara langsung.
+
+Endpoint utama pada versi ini adalah:
+
+```text
+POST /api/v1/predict
+
 ## Roadmap Versi Berikutnya
 
 Rencana pengembangan berikutnya:
 
-- Menambahkan endpoint `POST /predict`
-- Menambahkan input data saham dari user
 - Menambahkan dukungan multi saham
+- Menambahkan endpoint prediksi berbasis ticker saham
+- Menambahkan fitur auto feature engineering dari data harga terbaru
 - Menyimpan hasil prediksi ke database
 - Membuat dashboard frontend
+- Menambahkan autentikasi API
 - Deploy backend ke cloud
+- Meningkatkan performa model pada versi berikutnya
+```
