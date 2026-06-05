@@ -21,6 +21,7 @@ def download_stock_data(
         start_date: str,
         end_date: Optional[str] = None,
         output_dir: str = "data/raw",
+        save_file: bool = True,
     ) -> pd.DataFrame:
     """
     Mengambil data historis saham dari Yahoo Finance.
@@ -88,18 +89,20 @@ def download_stock_data(
     if missing_columns:
         raise ValueError(f"Kolom berikut tidak ditemukan: {missing_columns}")
     
-    # Buat folder output jika belum ada
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
+    if save_file:
+        # Buat folder output jika belum ada
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
 
-    # Nama file output
-    clean_ticker_name = ticker.replace(".", "_")
-    file_path = output_path / f"{clean_ticker_name}_raw.csv"
+        # Nama file output
+        clean_ticker_name = ticker.replace(".", "_")
+        file_path = output_path / f"{clean_ticker_name}_raw.csv"
 
-    # Simpan ke CSV
-    data.to_csv(file_path, index=False)
+        # Simpan ke CSV
+        data.to_csv(file_path, index=False)
 
-    print(f"Data berhasil disimpan ke: {file_path}")
+        print(f"Data berhasil disimpan ke: {file_path}")
+        
     print(f"Jumlah baris data: {len(data)}")
 
     return data

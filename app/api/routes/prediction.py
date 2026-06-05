@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas.prediction_schema import PredictionRequest, PredictionResponse
+from app.schemas.prediction_schema import PredictionRequest, PredictionResponse, PredictionTickerRequest, PredictionTickerResponse
 from app.services.model_loader import ModelLoaderError, model_loader
+from app.services.prediction_service import predict_by_ticker
 
 router = APIRouter(
     prefix="/api/v1",
@@ -105,6 +106,31 @@ def predict_stock(request: PredictionRequest):
             detail={
                 "status": "error",
                 "message": "Prediction failed.",
+                "errors": [
+                    {
+                        "field": None,
+                        "message": str(error),
+                        "value": None,
+                    }
+                ],
+            },
+        )
+
+@router.post(
+    "/predict/ticker",
+    response_model=PredictionTickerResponse,
+    summary="Predict stock recommendation by ticker",
+    description="Endpoint untuk menghasilkan rekomendasi saham dengan menginput ticker (contoh: BBCA.JK). Data akan diproses in-memory.",
+)
+def predict_stock_by_ticker(request: PredictionTickerRequest):
+    try:
+        return predict_by_ticker(request)
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "status": "error",
+                "message": "Prediction by ticker failed.",
                 "errors": [
                     {
                         "field": None,

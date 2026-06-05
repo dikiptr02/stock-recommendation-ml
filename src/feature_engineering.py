@@ -53,8 +53,10 @@ def calculate_rsi(data: pd.DataFrame, window: int = 14) -> pd.Series:
     return rsi
 
 def create_features(
-        input_path: str,
+        input_path: str = None,
         output_dir: str = "data/processed",
+        input_data: pd.DataFrame = None,
+        save_file: bool = True,
 ) -> pd.DataFrame:
     """
     Membuat fitur machine learning dari data saham.
@@ -74,14 +76,22 @@ def create_features(
         DataFrame yang sudah memiliki fitur tambahan.
     """
 
-    input_file = Path(input_path)
-
-    if not input_file.exists():
-        raise FileNotFoundError(f"File tidak ditemukan: {input_file}")
-    
-    print(f"Membaca data bersih dari: {input_path}")
-
-    data = pd.read_csv(input_file)
+    if input_data is not None:
+        # Data diproses di memory agar endpoint tidak membuat file CSV baru setiap dipanggil
+        data = input_data.copy()
+        print("Memproses data dari DataFrame memori")
+        input_stem = "memory_data"
+    else:
+        if input_path is None:
+            raise ValueError("Harus memberikan input_path atau input_data")
+        
+        input_file = Path(input_path)
+        if not input_file.exists():
+            raise FileNotFoundError(f"File tidak ditemukan: {input_path}")
+        
+        print(f"Membaca data bersih dari: {input_path}")
+        data = pd.read_csv(input_file)
+        input_stem = input_file.stem
 
     print(f"Jumlah data sebelum feature engineering: {len(data)} baris")
 
@@ -124,18 +134,19 @@ def create_features(
 
     print(f"Jumlah data setelah feature engineering: {len(data)} baris")
 
-    # Buat folder output jika belum ada
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
+    if save_file:
+        # Buat folder output jika belum ada
+        output_path = Path(output_dir)
+        output_path.mkdir(parents=True, exist_ok=True)
 
-    # Buat nama file output
-    output_filename = input_file.stem.replace("_clean", "_features") + ".csv"
-    output_file = output_path / output_filename
+        # Buat nama file output
+        output_filename = input_stem.replace("_clean", "_features") + ".csv"
+        output_file = output_path / output_filename
 
-    # Simpan data dengan fitur
-    data.to_csv(output_file, index=False)
+        # Simpan data dengan fitur
+        data.to_csv(output_file, index=False)
 
-    print(f"Data fitur berhasil disimpan ke: {output_file}")
+        print(f"Data fitur berhasil disimpan ke: {output_file}")
 
     return data
 

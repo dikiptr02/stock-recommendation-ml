@@ -13,6 +13,28 @@ Version
 
 - v1.0.1: Baseline machine learning pipeline
 - v1.1.0: FastAPI backend documentation
+- v1.2.0: Prediction API
+- v1.3.0: Prediction by Ticker API
+
+## [v1.3.0] - 2026-06-05 - Prediction by Ticker API
+
+### Added
+
+- Menambahkan endpoint `POST /api/v1/predict/ticker` untuk memprediksi rekomendasi saham.
+- Menambahkan class `PredictionTickerRequest` dan `PredictionTickerResponse` di schemas.
+- Menambahkan pemrosesan *in-memory* di module data pipeline `src/` agar API berjalan lebih efisien.
+- Menambahkan dokumentasi spesifik untuk endpoint baru di `docs/v1.3.0_prediction_by_ticker.md`.
+
+### Changed
+
+- Update parameter opsional (*backward-compatible*) `save_file` dan `input_data` di `src/data_collection.py`, `src/preprocessing.py`, dan `src/feature_engineering.py`.
+- Update `README.md` menyesuaikan versi terbaru.
+
+## [v1.2.0] - 2026-xx-xx - Prediction API
+
+### Added
+
+- Menambahkan Prediction API untuk memprediksi rekomendasi saham secara real-time.
 
 ## [v1.1.0] - 2026-05-25 - FastAPI Backend Documentation
 

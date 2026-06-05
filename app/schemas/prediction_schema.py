@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Any
 from pydantic import BaseModel, Field
 
 class PredictionRequest(BaseModel):
@@ -95,3 +95,20 @@ class PredictionResponse(BaseModel):
         description="Versi model yang digunakan.",
         example="v1.0.1",
     )
+
+class PredictionTickerRequest(BaseModel):
+    ticker: str = Field(..., description="Kode ticker saham (contoh: BBCA.JK)")
+    period: str = Field("5y", description="Periode data historis (contoh: 1y, 5y, max)")
+
+class PredictionTickerResponse(BaseModel):
+    status: str = Field(..., description="Status response API", example="success")
+    ticker: str = Field(..., description="Kode ticker saham")
+    period: str = Field(..., description="Periode yang digunakan")
+    model_version: str = Field(..., description="Versi model")
+    model_name: str = Field(..., description="Nama model")
+    latest_data_date: str = Field(..., description="Tanggal data terbaru")
+    latest_close_price: float = Field(..., description="Harga close terbaru")
+    features_used: Dict[str, Any] = Field(..., description="Fitur teknikal yang digunakan")
+    recommendation: str = Field(..., description="Rekomendasi Buy, Hold, atau Sell")
+    confidence: float = Field(..., description="Nilai confidence prediksi")
+    probabilities: Dict[str, float] = Field(..., description="Probabilitas masing-masing label")

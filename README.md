@@ -12,7 +12,7 @@ berdasarkan data historis harga saham, indikator teknikal, dan evaluasi model ma
 
 ## Version
 
-Current version: v1.2.0
+Current version: v1.3.0
 
 ### Version History
 
@@ -21,6 +21,7 @@ Current version: v1.2.0
 | v1.0.1  | Pipeline machine learning baseline untuk rekomendasi Buy, Hold, Sell |
 | v1.1.0  | Backend dokumentasi interaktif menggunakan FastAPI                   |
 | v1.2.0  | Prediction API untuk prediksi real-time menggunakan input user       |
+| v1.3.0  | Prediction API berdasarkan Ticker saham (Prediction by Ticker)       |
 
 ## Tujuan Project
 
@@ -375,11 +376,24 @@ POST /api/v1/predict
 Rencana pengembangan berikutnya:
 
 - Menambahkan dukungan multi saham
-- Menambahkan endpoint prediksi berbasis ticker saham
 - Menambahkan fitur auto feature engineering dari data harga terbaru
 - Menyimpan hasil prediksi ke database
 - Membuat dashboard frontend
 - Menambahkan autentikasi API
 - Deploy backend ke cloud
 - Meningkatkan performa model pada versi berikutnya
+
+---
+
+# Version v1.3.0 - Prediction by Ticker API
+
+Pada versi v1.3.0, project menambahkan fitur untuk memprediksi rekomendasi saham secara instan dengan bermodalkan input **kode ticker**. Sistem secara dinamis akan mengambil data historis saham, menghitung fitur teknikal di memori, dan mengembalikan rekomendasi Buy/Hold/Sell.
+
+Endpoint utama pada versi ini adalah:
+
+```text
+POST /api/v1/predict/ticker
 ```
+
+Untuk detail dokumentasi lengkap mengenai API terbaru, payload request/response, beserta catatan penggunaannya, silakan mengacu ke dokumen berikut:
+[Dokumentasi API v1.3.0: Prediction by Ticker](docs/v1.3.0_prediction_by_ticker.md)
