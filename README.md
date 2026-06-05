@@ -12,7 +12,7 @@ berdasarkan data historis harga saham, indikator teknikal, dan evaluasi model ma
 
 ## Version
 
-Current version: v1.1.0
+Current version: v1.2.0
 
 ### Version History
 
@@ -20,6 +20,7 @@ Current version: v1.1.0
 |---|---|
 | v1.0.1 | Pipeline machine learning baseline untuk rekomendasi Buy, Hold, Sell |
 | v1.1.0 | Backend dokumentasi interaktif menggunakan FastAPI |
+| v1.2.0 | Prediction API untuk prediksi real-time menggunakan input user |
 
 ## Tujuan Project
 
