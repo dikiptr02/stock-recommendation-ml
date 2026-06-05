@@ -15,6 +15,32 @@ Version
 - v1.1.0: FastAPI backend documentation
 - v1.2.0: Prediction API
 - v1.3.0: Prediction by Ticker API
+- v1.3.1: Code Cleanup & Refactoring
+- v1.4.0: Batch Prediction by Multiple Tickers
+
+## [v1.4.0] - 2026-06-05 - Batch Prediction by Multiple Tickers
+
+### Added
+
+- Menambahkan endpoint `POST /api/v1/predict/batch` untuk memprediksi rekomendasi saham dari banyak ticker secara bersamaan.
+- Menambahkan schema `BatchPredictionRequest`, `TickerResult`, dan `BatchPredictionResponse`.
+- Menambahkan fungsi `predict_batch` pada `prediction_service.py` dengan metode pemrosesan aman (sequential) per ticker.
+- Menambahkan dokumen penjelasan `docs/v1.4.0_batch_prediction.md`.
+
+### Changed
+
+- Update semua file *service* di dalam `app/services/` agar memiliki dokumentasi *inline* (komentar baris-per-baris) berbahasa Indonesia.
+- Update `README.md` menyesuaikan versi terbaru.
+
+## [v1.3.1] - 2026-06-05 - Code Cleanup & Refactoring
+
+### Removed
+
+- Menghapus 230 baris *dead code* dari `app/services/prediction_service.py`.
+- Menghapus *import* ganda `prediction_routes` di `app/main.py`.
+- Menghapus file `app/routes/prediction_routes.py` yang sudah *obsolete*.
+- Menghapus folder `notebooks/` yang kosong.
+- Memindahkan semua testing script lama ke `archive/scripts/v1.2.0/`.
 
 ## [v1.3.0] - 2026-06-05 - Prediction by Ticker API
 

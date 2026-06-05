@@ -1,8 +1,15 @@
 from fastapi import APIRouter, HTTPException, status
 
-from app.schemas.prediction_schema import PredictionRequest, PredictionResponse, PredictionTickerRequest, PredictionTickerResponse
+from app.schemas.prediction_schema import (
+    PredictionRequest, 
+    PredictionResponse, 
+    PredictionTickerRequest, 
+    PredictionTickerResponse,
+    BatchPredictionRequest,
+    BatchPredictionResponse
+)
 from app.services.model_loader import ModelLoaderError, model_loader
-from app.services.prediction_service import predict_by_ticker
+from app.services.prediction_service import predict_by_ticker, predict_batch
 
 router = APIRouter(
     prefix="/api/v1",
@@ -131,6 +138,36 @@ def predict_stock_by_ticker(request: PredictionTickerRequest):
             detail={
                 "status": "error",
                 "message": "Prediction by ticker failed.",
+                "errors": [
+                    {
+                        "field": None,
+                        "message": str(error),
+                        "value": None,
+                    }
+                ],
+            },
+        )
+
+@router.post(
+    "/predict/batch",
+    response_model=BatchPredictionResponse,
+    summary="Predict stock recommendation for multiple tickers (batch)",
+    description="Endpoint untuk menghasilkan rekomendasi saham dengan menginput beberapa ticker sekaligus (contoh: ['BBCA.JK', 'TLKM.JK']). Data akan diproses secara berurutan.",
+)
+def predict_stock_batch(request: BatchPredictionRequest):
+    """
+    Menerima request batch prediction.
+    Akan memanggil service predict_batch yang akan memproses tiap ticker secara aman.
+    Jika satu ticker gagal, ticker lainnya akan tetap diproses.
+    """
+    try:
+        return predict_batch(request)
+    except Exception as error:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "status": "error",
+                "message": "Batch prediction failed due to internal error.",
                 "errors": [
                     {
                         "field": None,

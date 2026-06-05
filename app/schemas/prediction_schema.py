@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, List
 from pydantic import BaseModel, Field
 
 class PredictionRequest(BaseModel):
@@ -112,3 +112,39 @@ class PredictionTickerResponse(BaseModel):
     recommendation: str = Field(..., description="Rekomendasi Buy, Hold, atau Sell")
     confidence: float = Field(..., description="Nilai confidence prediksi")
     probabilities: Dict[str, float] = Field(..., description="Probabilitas masing-masing label")
+
+# --- SCHEMA UNTUK BATCH PREDICTION (v1.4.0) ---
+
+class BatchPredictionRequest(BaseModel):
+    """
+    Schema input (Request) untuk memprediksi banyak saham sekaligus.
+    User akan mengirim list berisi beberapa ticker dan periode datanya.
+    """
+    tickers: List[str] = Field(..., description="Daftar kode ticker saham (contoh: ['BBCA.JK', 'TLKM.JK'])")
+    period: str = Field("5y", description="Periode data historis (contoh: 1y, 5y, max)")
+
+class TickerResult(BaseModel):
+    """
+    Schema untuk menyimpan detail hasil dari masing-masing individu ticker.
+    Jika sukses, berisi harga, rekomendasi, dll.
+    Jika gagal, field rekomendasi dll akan kosong, namun field 'message' akan berisi alasan gagalnya.
+    """
+    ticker: str = Field(..., description="Kode ticker saham")
+    status: str = Field(..., description="Status prediksi untuk ticker ini: 'success' atau 'error'")
+    message: Optional[str] = Field(default=None, description="Pesan detail jika status error")
+    latest_data_date: Optional[str] = Field(default=None, description="Tanggal data terbaru")
+    latest_close_price: Optional[float] = Field(default=None, description="Harga close terbaru")
+    recommendation: Optional[str] = Field(default=None, description="Rekomendasi Buy, Hold, atau Sell")
+    confidence: Optional[float] = Field(default=None, description="Nilai confidence prediksi")
+    probabilities: Optional[Dict[str, float]] = Field(default=None, description="Probabilitas masing-masing label")
+
+class BatchPredictionResponse(BaseModel):
+    """
+    Schema output (Response) untuk endpoint batch prediction.
+    Berisi rekapitulasi jumlah request yang sukses/gagal beserta detail (results) dari setiap ticker.
+    """
+    status: str = Field(..., description="Status respons keseluruhan API", example="success")
+    total_requested: int = Field(..., description="Jumlah ticker yang di-request")
+    total_success: int = Field(..., description="Jumlah ticker yang berhasil diproses")
+    total_failed: int = Field(..., description="Jumlah ticker yang gagal diproses")
+    results: List[TickerResult] = Field(..., description="Daftar detail hasil untuk setiap ticker")
