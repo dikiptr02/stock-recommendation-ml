@@ -17,6 +17,28 @@ Version
 - v1.3.0: Prediction by Ticker API
 - v1.3.1: Code Cleanup & Refactoring
 - v1.4.0: Batch Prediction by Multiple Tickers
+- v1.4.1: API Cleanup, Validation, and Consistency
+
+## [v1.4.1] - 2026-06-08 - API Cleanup, Validation, and Consistency
+
+### Added
+
+- Menambahkan `app/core/config.py` untuk menyimpan konfigurasi utama.
+- Menambahkan helper function normalisasi ticker di `app/services/prediction_service.py`.
+
+### Changed
+
+- Menggunakan `APP_NAME` dan `APP_VERSION` di `app/main.py`.
+- Menggunakan konfigurasi central di seluruh API.
+
+### Fixed
+
+- Menghapus duplicate root endpoint `GET /` di `app/routes/project_routes.py`.
+- Memperbaiki validasi `period` yang sebelumnya hanya berupa string menjadi enum `1y`, `5y`, `max`.
+- Membatasi batch prediction maksimal 10 ticker.
+- Menambahkan normalisasi ticker (strip whitespace, uppercase, deduplicate) pada *prediction service*.
+- Memperbaiki potensi bug pada `app/services/model_loader.py` saat membaca class label model.
+- Merapikan dan membersihkan logic service.
 
 ## [v1.4.0] - 2026-06-05 - Batch Prediction by Multiple Tickers
 

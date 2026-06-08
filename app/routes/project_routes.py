@@ -1,29 +1,15 @@
 from fastapi import APIRouter
+from app.core.config import APP_VERSION
 
 router = APIRouter(
     tags=["Project"]
 )
 
-@router.get("/")
-def root():
-    return {
-        "project_name": "Machine Learning Rekomendasi Saham",
-        "current_version": "v1.1.0",
-        "description": (
-            "Project machine learning untuk menghasilkan rekomendasi "
-            "Buy, Hold, atau Sell berdasarkan data saham."
-        ),
-        "disclaimer": (
-            "Project ini hanya untuk pembelajaran dan portofolio. "
-            "Hasil prediksi bukan nasihat investasi."
-        ),
-    }
-
 @router.get("/project-info")
 def project_info():
     return {
         "project_name": "Machine Learning Rekomendasi Saham",
-        "version": "v1.1.0",
+        "version": APP_VERSION,
         "goal": (
             "Membangun backend sederhana menggunakan FastAPI untuk  "
             "menampilkan informasi project, model, evaluasi, dan prediksi."
@@ -67,7 +53,7 @@ def project_info():
 def docs_summary():
     return {
         "title": "Dokumentasi Project Machine Learning Rekomendasi Saham",
-        "version": "v1.1.0",
+        "version": APP_VERSION,
         "summary": (
             "Project ini membangun pipeline machine learning untuk memberikan "
             "rekomendasi saham berupa Buy, Hold, atau Sell. Pada versi v1.1.0, "

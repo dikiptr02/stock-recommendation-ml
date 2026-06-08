@@ -1,5 +1,7 @@
-from typing import Dict, Optional, Any, List
+from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
+
+from app.core.config import DEFAULT_PERIOD, MAX_BATCH_TICKERS
 
 class PredictionRequest(BaseModel):
     """
@@ -97,8 +99,17 @@ class PredictionResponse(BaseModel):
     )
 
 class PredictionTickerRequest(BaseModel):
-    ticker: str = Field(..., description="Kode ticker saham (contoh: BBCA.JK)")
-    period: str = Field("5y", description="Periode data historis (contoh: 1y, 5y, max)")
+    ticker: str = Field(
+        ...,
+        min_length=1,
+        description="Kode ticker saham, contoh: BBCA.JK",
+        example="BBCA.JK",
+    )
+    period: Literal["1y", "5y", "max"] = Field(
+        default=DEFAULT_PERIOD,
+        description="Periode data historis. Pilihan valid: 1y, 5y, max.",
+        example="5y",
+    )
 
 class PredictionTickerResponse(BaseModel):
     status: str = Field(..., description="Status response API", example="success")
@@ -120,8 +131,18 @@ class BatchPredictionRequest(BaseModel):
     Schema input (Request) untuk memprediksi banyak saham sekaligus.
     User akan mengirim list berisi beberapa ticker dan periode datanya.
     """
-    tickers: List[str] = Field(..., description="Daftar kode ticker saham (contoh: ['BBCA.JK', 'TLKM.JK'])")
-    period: str = Field("5y", description="Periode data historis (contoh: 1y, 5y, max)")
+    tickers: List[str] = Field(
+        ...,
+        min_length=1,
+        max_length=MAX_BATCH_TICKERS,
+        description=f"Daftar kode ticker saham, maksimal {MAX_BATCH_TICKERS} ticker.",
+        example=["BBCA.JK", "TLKM.JK"],
+    )
+    period: Literal["1y", "5y", "max"] = Field(
+        default=DEFAULT_PERIOD,
+        description="Periode data historis. Pilihan valid: 1y, 5y, max.",
+        example="5y",
+    )
 
 class TickerResult(BaseModel):
     """

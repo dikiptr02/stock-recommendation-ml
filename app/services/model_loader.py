@@ -130,7 +130,7 @@ class StockModelLoader:
         if hasattr(self.model, "named_steps"):
             steps = list(self.model.named_steps.values())
 
-            for _, step in reversed(steps):
+            for step in reversed(steps):
                 if hasattr(step, "classes_"):
                     return list(step.classes_)
                 

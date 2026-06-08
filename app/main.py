@@ -2,15 +2,16 @@ from fastapi import FastAPI, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from app.core.config import APP_NAME, APP_VERSION
 from app.routes.project_routes import router as project_router
 from app.routes.model_routes import router as model_router
 from app.routes.evaluation_routes import router as evaluation_router
 from app.api.routes.prediction import router as prediction_router
 
 app = FastAPI(
-    title="Stock Recommendation Prediction API",
+    title=APP_NAME,
     description="Prediction API untuk rekomendasi saham Buy, Hold, atau Sell.",
-    version="1.2.0",
+    version=APP_VERSION,
 )
 
 @app.exception_handler(RequestValidationError)
@@ -50,8 +51,8 @@ async def validation_exception_handler(
 @app.get("/", tags=["Root"])
 def root():
     return {
-        "message": "Stock Recommendation Prediction API",
-        "version": "1.2.0",
+        "message": APP_NAME,
+        "version": APP_VERSION,
         "status": "running",
     }
 
@@ -60,7 +61,7 @@ def health_check():
     return {
         "status": "healthy",
         "message": "prediction-api",
-        "version": "1.2.0",
+        "version": APP_VERSION,
     }
 
 app.include_router(project_router)
