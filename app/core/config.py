@@ -1,5 +1,5 @@
 APP_NAME = "Stock Recommendation Prediction API"
-APP_VERSION = "1.4.1"
+APP_VERSION = "1.4.2"
 API_PREFIX = "/api/v1"
 
 MODEL_VERSION_FALLBACK = "v1.0.1"

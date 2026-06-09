@@ -18,6 +18,34 @@ Version
 - v1.3.1: Code Cleanup & Refactoring
 - v1.4.0: Batch Prediction by Multiple Tickers
 - v1.4.1: API Cleanup, Validation, and Consistency
+- v1.4.2: Project Cleanup, Documentation Sync, and Minor API Fixes
+
+## [v1.4.2] - 2026-06-08 - Project Cleanup, Documentation Sync, and Minor API Fixes
+
+### Changed
+
+- Update `APP_VERSION` dari `1.4.1` menjadi `1.4.2`.
+- Update informasi project dan ringkasan dokumentasi pada endpoint `/project-info` dan `/docs-summary`.
+- Update daftar endpoint pada dokumentasi agar sesuai dengan kondisi API terbaru.
+- Menyelaraskan README dengan status project v1.4.2.
+
+### Fixed
+
+- Memperbaiki typo kecil pada docstring endpoint model info.
+- Merapikan pesan error minor pada endpoint prediksi.
+- Menghapus referensi endpoint lama yang sudah tidak relevan dari dokumentasi.
+
+### Removed
+
+- Menghapus folder `__pycache__`.
+- Menghapus file cache Python `.pyc` dari project.
+
+### Notes
+
+- Versi ini tidak mengubah model machine learning.
+- Versi ini tidak menambahkan endpoint baru.
+- Model yang digunakan tetap `models/stock_model_v1.0.1.pkl`.
+- Fokus versi ini adalah cleanup patch setelah v1.4.1.
 
 ## [v1.4.1] - 2026-06-08 - API Cleanup, Validation, and Consistency
 

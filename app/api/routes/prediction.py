@@ -23,7 +23,7 @@ router = APIRouter(
 )
 def get_model_info():
     """
-    Endpoint untuk mamastikan model .pkl berhsil di-load.
+    Endpoint untuk mamastikan model .pkl berhasil di-load.
     """
     try:
         return {
@@ -96,7 +96,7 @@ def predict_stock(request: PredictionRequest):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
                 "status": "error",
-                "message": "model prediction failed.",
+                "message": "Model prediction failed.",
                 "errors": [
                     {
                         "field": None,

@@ -1,4 +1,4 @@
-# Stock Recommendation ML (v1.4.1)
+# Stock Recommendation ML (v1.4.2)
 
 Project ini adalah project pembelajaran Machine Learning *end-to-end* untuk membuat rekomendasi saham harian (Buy, Hold, Sell) berdasarkan data historis harga saham dan indikator teknikal. Saat ini, project telah dilengkapi dengan Backend API Interaktif (FastAPI) yang mampu melayani prediksi saham secara *real-time* maupun dalam jumlah banyak (*batch*).
 
@@ -13,9 +13,9 @@ Project ini adalah project pembelajaran Machine Learning *end-to-end* untuk memb
 
 Untuk melihat riwayat lengkap perkembangan fitur dan *bug fix* dari versi awal hingga terkini, silakan baca **[CHANGELOG.md](CHANGELOG.md)**.
 
-## Version v1.4.1 — API Cleanup, Validation, and Consistency
+## Version v1.4.2 — Project Cleanup, Documentation Sync, and Minor API Fixes
 
-Versi **v1.4.1** merupakan patch release setelah v1.4.0. Fokus utama versi ini adalah membersihkan struktur API, memperkuat validasi request, dan membuat metadata versi project lebih konsisten.
+Versi ini tidak mengubah model machine learning, tidak melakukan training ulang, dan tidak menambah endpoint besar baru. Fokus update berada pada cleanup project, sinkronisasi dokumentasi, dan perbaikan kecil pada metadata API.
 
 ### Main Improvements
 
@@ -115,14 +115,18 @@ archive/                   # Tempat penyusutan file atau script testing usang
 
 ## Daftar Endpoint API
 
-| Method | Endpoint API                    | Deskripsi Fungsionalitas                               |
-| ------ | ------------------------------- | ------------------------------------------------------ |
-| GET    | `/project-info`                 | Menampilkan ringkasan dan metadata project             |
-| GET    | `/model-info`                   | Menampilkan metadata model baseline (Random Forest)    |
-| GET    | `/evaluation`                   | Menampilkan performa (Accuracy, Precision, dll)        |
-| POST   | `/api/v1/predict`               | Prediksi saham menggunakan input fitur teknikal manual |
-| POST   | `/api/v1/predict/ticker`        | Prediksi otomatis berdasarkan satu kode ticker         |
-| POST   | `/api/v1/predict/batch`         | Prediksi multi-saham (array) menggunakan list ticker   |
+| Method | Endpoint API              | Deskripsi |
+| ------ | ------------------------- | --------- |
+| GET    | `/`                       | Root endpoint API |
+| GET    | `/health`                 | Mengecek status API |
+| GET    | `/project-info`           | Menampilkan ringkasan project |
+| GET    | `/docs-summary`           | Menampilkan ringkasan dokumentasi |
+| GET    | `/model-info`             | Menampilkan metadata model baseline |
+| GET    | `/evaluation`             | Menampilkan ringkasan evaluasi model |
+| GET    | `/api/v1/model-info`      | Mengecek model loader untuk Prediction API |
+| POST   | `/api/v1/predict`         | Prediksi manual berdasarkan fitur teknikal |
+| POST   | `/api/v1/predict/ticker`  | Prediksi otomatis berdasarkan ticker |
+| POST   | `/api/v1/predict/batch`   | Prediksi beberapa ticker sekaligus |
 
 ## Roadmap Selanjutnya
 - Melakukan konfigurasi Auto-Training berkala untuk model ML

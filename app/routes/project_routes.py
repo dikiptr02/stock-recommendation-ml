@@ -15,18 +15,21 @@ def project_info():
             "menampilkan informasi project, model, evaluasi, dan prediksi."
         ),
         "description": (
-            "Hasil Versi v1.1.0 berfokus pada perombakan sistem dokumentasi "
-            "dengan menambahkan backend API sederhana. Backend ini membaca "
-            "hasil pipeline dari v1.0.1 tanpa melakukan training ulang."
+            "Project ini memiliki pipeline machine learning untuk menghasilkan "
+            "rekomendasi saham Buy, Hold, atau Sell. Pada versi API saat ini, "
+            "project sudah mendukung prediksi manual, prediksi berdasarkan ticker, "
+            "dan batch prediction untuk beberapa ticker."
         ),
         "main_features": [
             "Menampilkan informasi project",
-            "Menampilkan informasi model terbaik",
+            "Menampilkan informasi model baseline",
             "Menampilkan ringkasan evaluasi model",
-            "Menampilkan hasil prediksi terbaru",
-            "Menyediakan dokumentasi interaktif melalui Swagger UI",
+            "Prediksi otomatis berdasarkan ticker saham",
+            "Prediksi otomatis berdasarkan ticker saham",
+            "Batch prediction untuk beberapa ticker",
+            "Dokumentasi interaktif melalui Swagger UI",
         ],
-        "ml_pipeline_v1_0_1": [
+        "ml_pipeline": [
             "Data_Collection",
             "Preprocessing",
             "Feature_Engineering",
@@ -35,13 +38,13 @@ def project_info():
             "Evaluation_Model",
             "Prediction",
         ],
-        "backend_focus_v1_1_0": [
-            "Membuat backend sederhana menggunakan FastAPI",
-            "Membaca artefak hasil pipeline v1.0.1",
-            "Menampilkan informasi model melalui API",
-            "Menampilkan evaluasi model melalui API",
-            "Menampilkan hasil prediksi melalui API",
-            "Menyiapkan pondasi menuju API prediksi atau dashboard",
+        "api_features": [
+            "FastAPI backend",
+            "Manual prediction endpoint",
+            "Prediction by ticker endpoint",
+            "Batch prediction endpoint",
+            "Centralized API configuration",
+            "Request validation with Pydantic",
         ],
         "disclaimer": (
             "Project ini hanya untuk pembelajaran dan portofolio. "
@@ -55,36 +58,39 @@ def docs_summary():
         "title": "Dokumentasi Project Machine Learning Rekomendasi Saham",
         "version": APP_VERSION,
         "summary": (
-            "Project ini membangun pipeline machine learning untuk memberikan "
-            "rekomendasi saham berupa Buy, Hold, atau Sell. Pada versi v1.1.0, "
-            "project dikembangkan dengan backend FastAPI agar hasil model, "
-            "evaluasi, dan prediksi dapat diakses secara interaktif."
+            "Project ini membangun pipeline machine learning dan backend API "
+            "untuk memberikan rekomendasi saham berupa Buy, Hold, atau Sell. "
+            "Versi saat ini berfokus pada API prediction, validasi input, "
+            "batch prediction, dan kerapian struktur project."
         ),
-        "available_files_from_v1.0.1": [
-            "models/stock_model_v1.0.1.pkl",
+        "model_artifact": "models/stock_model_v1.0.1.pkl",
+        "report_files": [
             "reports/evaluation_v1.0.1.md",
             "reports/prediction_v1.0.1.md",
-            "data/processed/BBCA_JK_labeled.csv",
-            "data/processed/BBCA_JK_features.csv",
         ],
         "available_endpoints": [
             "GET /",
+            "GET /health",
             "GET /project-info",
+            "GET /docs-summary",
             "GET /model-info",
             "GET /evaluation",
-            "GET /prediction",
-            "GET /docs-summary",
+            "GET /api/v1/model-info",
+            "POST /api/v1/predict",
+            "POST /api/v1/predict/ticker",
+            "POST /api/v1/predict/batch",
         ],
         "notes": (
-            "Backend v1.1.0 berfungsi sebagai dokumentasi interaktif. "
-            "Backend belum melakukan training ulang dan belum menyediakan "
-            "prediksi real-time dari input user."
+            "API saat ini menggunakan model baseline dari v1.0.1. "
+            "Belum ada training ulang otomatis, database history prediction, "
+            "atau frontend dashboard."
         ),
         "future_development": [
-            "Menambahkan endpoint prediksi real-time",
-            "Menambahkan dukungan multi saham",
-            "Menambahkan database",
-            "Membuat dashboard frontend",
-            "Deploy backend ke cloud",
+            "Menambahkan automated testing untuk endpoint API",
+            "Menambahkan logging",
+            "Meningkatkan performa model machine learning",
+            "Menambahkan backtesting",
+            "Menyimpan hasil prediksi ke database",
+            "Membangun dashboard frontend",
         ],
     }
