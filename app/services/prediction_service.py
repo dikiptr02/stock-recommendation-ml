@@ -9,9 +9,27 @@ from app.schemas.prediction_schema import (
     TickerResult
 )
 from app.services.model_loader import model_loader
-from src.data_collection import download_stock_data
-from src.feature_engineering import create_features
-from src.preprocessing import preprocess_stock_data
+
+
+def _load_pipeline_function():
+    """
+    Lazy import untuk pipeline data saham.
+
+    Tujuannya agar API tetap bisa start meskipun dependency data collection
+    seperti yfinance bermasalah. Import pipeline hanya dilakukan saat endpoint
+    predict by ticker atau batch benar-benar dipanggil.
+    """
+    try:
+        from src.data_collection import download_stock_data
+        from src.feature_engineering import create_features
+        from src.preprocessing import preprocess_stock_data
+
+        return download_stock_data, preprocess_stock_data, create_features
+
+    except Exception as error:
+        raise RuntimeError(
+            f"Gagal memuat pipeline data saham: {error}"
+        ) from error
 
 
 
@@ -105,6 +123,8 @@ def predict_by_ticker(request: PredictionTickerRequest) -> PredictionTickerRespo
     """
     ticker = _normalize_ticker(request.ticker)
     start_date = _get_start_date(request.period)
+
+    download_stock_data, preprocess_stock_data, create_features = _load_pipeline_functions()
 
     raw_data = download_stock_data(
         ticker=ticker,

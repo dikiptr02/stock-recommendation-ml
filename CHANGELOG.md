@@ -19,6 +19,41 @@ Version
 - v1.4.0: Batch Prediction by Multiple Tickers
 - v1.4.1: API Cleanup, Validation, and Consistency
 - v1.4.2: Project Cleanup, Documentation Sync, and Minor API Fixes
+- v1.5.0: Automated Testing and API Reliability
+
+
+## [v1.5.0] - Automated Testing and API Reliability
+
+### Added
+
+* Added automated testing using Pytest.
+* Added health endpoint tests.
+* Added request validation tests.
+* Added prediction API tests.
+* Added model loader tests.
+* Added error handling tests.
+* Added prediction service helper tests.
+
+### Improved
+
+* Added global exception handler for unexpected server errors.
+* Standardized JSON error response format across API endpoints.
+* Implemented lazy import mechanism for ticker prediction pipeline.
+* Improved backend reliability and maintainability.
+* Updated project documentation and README.
+
+### Removed
+
+* Removed legacy manual testing scripts from v1.2.0.
+* Removed unused root `main.py`.
+* Removed empty `scripts/` directory.
+* Cleaned obsolete archived testing files.
+
+### Testing
+
+* Total automated tests: 14
+* Test status: All tests passing
+
 
 ## [v1.4.2] - 2026-06-08 - Project Cleanup, Documentation Sync, and Minor API Fixes
 

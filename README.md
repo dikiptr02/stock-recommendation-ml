@@ -1,75 +1,51 @@
-# Stock Recommendation ML (v1.4.2)
+# Stock Recommendation ML (v1.5.0)
 
 Project ini adalah project pembelajaran Machine Learning *end-to-end* untuk membuat rekomendasi saham harian (Buy, Hold, Sell) berdasarkan data historis harga saham dan indikator teknikal. Saat ini, project telah dilengkapi dengan Backend API Interaktif (FastAPI) yang mampu melayani prediksi saham secara *real-time* maupun dalam jumlah banyak (*batch*).
 
 > **Catatan Penting:** Project ini ditujukan secara eksklusif untuk pembelajaran dan portofolio data science/machine learning. Output prediksi **bukan** merupakan nasihat investasi finansial.
 
-## Fitur Utama saat ini (v1.4.0)
+## Fitur Utama saat ini (v1.5.0)
 
 1. **Prediction by Ticker API**: Memprediksi rekomendasi saham secara instan bermodalkan kode ticker (contoh: `BBCA.JK`). Sistem akan secara otomatis mengunduh data terbaru dan memproses *feature engineering* secara *in-memory*.
 2. **Batch Prediction API**: Memproses banyak ticker saham sekaligus secara berurutan dan kebal dari *crash* (*fault-tolerant*) jika ada ticker yang *invalid* atau tidak ditemukan datanya.
 3. **Interactive Documentation**: *Swagger UI* bawaan FastAPI terpasang untuk melihat, mengetes, dan membaca deskripsi masing-masing endpoint API.
 4. **Project Insights**: Menyediakan *endpoint* laporan untuk melihat akurasi model (*evaluation metric*) dan spesifikasi *Random Forest Classifier* yang menjadi model *baseline*.
+5. **Automated Testing**: Project telah dilengkapi dengan unit test dan API test menggunakan Pytest untuk memastikan endpoint, model loader, validation, dan error handling tetap berjalan stabil setelah perubahan kode.
 
 Untuk melihat riwayat lengkap perkembangan fitur dan *bug fix* dari versi awal hingga terkini, silakan baca **[CHANGELOG.md](CHANGELOG.md)**.
 
-## Version v1.4.2 — Project Cleanup, Documentation Sync, and Minor API Fixes
+## Version v1.5.0 — Automated Testing and API Reliability
 
-Versi ini tidak mengubah model machine learning, tidak melakukan training ulang, dan tidak menambah endpoint besar baru. Fokus update berada pada cleanup project, sinkronisasi dokumentasi, dan perbaikan kecil pada metadata API.
+Versi ini berfokus pada peningkatan kualitas backend melalui automated testing, reliability improvement, dan project cleanup. Tidak ada perubahan pada model machine learning maupun proses training.
 
 ### Main Improvements
 
-* Menambahkan central configuration melalui `app/core/config.py`.
-* Menggunakan `APP_NAME` dan `APP_VERSION` secara konsisten di `app/main.py`.
-* Menghapus duplicate root endpoint agar `GET /` hanya dikelola dari `app/main.py`.
-* Memperkuat validasi request untuk single ticker prediction dan batch prediction.
-* Membatasi input batch prediction maksimal 10 ticker.
-* Membatasi nilai `period` hanya pada pilihan valid: `1y`, `5y`, dan `max`.
-* Menambahkan normalisasi ticker:
+* Menambahkan automated testing menggunakan Pytest.
+* Menambahkan pengujian endpoint API utama.
+* Menambahkan pengujian validasi request.
+* Menambahkan pengujian model loader.
+* Menambahkan pengujian error handling.
+* Menambahkan pengujian helper function pada prediction service.
+* Menambahkan global exception handler untuk menjaga konsistensi response API.
+* Menstandarkan format JSON error response.
+* Menerapkan lazy import pada pipeline prediction by ticker untuk meningkatkan reliability startup API.
+* Membersihkan struktur project dari file testing lama dan file yang sudah tidak digunakan.
 
-  * menghapus spasi di awal/akhir input,
-  * mengubah ticker menjadi uppercase,
-  * menghapus ticker duplikat pada batch prediction.
-* Memperbaiki potensi bug pada `model_loader.py` saat membaca class label model.
-* Membersihkan dan merapikan logic di `prediction_service.py`.
+### Test Coverage
 
-### Validation Rules
+Automated tests saat ini mencakup:
 
-Single ticker prediction:
-
-```json
-{
-  "ticker": "BBCA.JK",
-  "period": "5y"
-}
-```
-
-Batch prediction:
-
-```json
-{
-  "tickers": ["BBCA.JK", "TLKM.JK"],
-  "period": "5y"
-}
-```
-
-Valid `period` values:
-
-```text
-1y
-5y
-max
-```
-
-Maximum batch tickers:
-
-```text
-10 tickers per request
-```
+* Health endpoint testing
+* Validation testing
+* Prediction API testing
+* Model loader testing
+* Error handling testing
+* Prediction service helper testing
 
 ### Notes
 
-Versi ini tidak mengubah model machine learning, file `.pkl`, logic training, maupun label rekomendasi. Perubahan hanya berfokus pada API cleanup, request validation, dan konsistensi struktur kode.
+Versi ini tidak mengubah model machine learning, file `.pkl`, feature engineering, proses training, maupun label rekomendasi. Fokus update berada pada reliability backend, automated testing, dan maintainability project.
+
 
 ## Dokumentasi Modul Spesifik
 
@@ -112,6 +88,23 @@ archive/                   # Tempat penyusutan file atau script testing usang
    ```text
    http://127.0.0.1:8000/docs
    ```
+
+## Menjalankan Automated Test
+
+Jalankan seluruh test:
+
+```bash
+python -m pytest
+```
+
+Menjalankan test tertentu:
+
+```bash
+python -m pytest tests/test_model_loader.py -v
+```
+
+Saat versi v1.5.0 dirilis, project memiliki 14 automated tests yang mencakup endpoint API, validation, error handling, model loader, dan prediction service.
+
 
 ## Daftar Endpoint API
 
