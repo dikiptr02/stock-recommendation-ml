@@ -1,5 +1,6 @@
 from typing import Any, Dict, List, Literal, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+import re
 
 from app.core.config import DEFAULT_PERIOD, MAX_BATCH_TICKERS
 
@@ -111,6 +112,14 @@ class PredictionTickerRequest(BaseModel):
         example="5y",
     )
 
+    @field_validator("ticker")
+    @classmethod
+    def validate_ticker_format(cls, v: str) -> str:
+        v = v.strip()
+        if not re.match(r'^[A-Za-z0-9\.\-]+$', v):
+            raise ValueError("Ticker hanya boleh berisi huruf, angka, titik, atau strip.")
+        return v
+
 class PredictionTickerResponse(BaseModel):
     status: str = Field(..., description="Status response API", example="success")
     ticker: str = Field(..., description="Kode ticker saham")
@@ -143,6 +152,17 @@ class BatchPredictionRequest(BaseModel):
         description="Periode data historis. Pilihan valid: 1y, 5y, max.",
         example="5y",
     )
+
+    @field_validator("tickers", mode="before")
+    @classmethod
+    def validate_tickers_format(cls, v: List[str]) -> List[str]:
+        validated = []
+        for ticker in v:
+            ticker = ticker.strip()
+            if not re.match(r'^[A-Za-z0-9\.\-]+$', ticker):
+                raise ValueError(f"Ticker '{ticker}' hanya boleh berisi huruf, angka, titik, atau strip.")
+            validated.append(ticker)
+        return validated
 
 class TickerResult(BaseModel):
     """

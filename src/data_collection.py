@@ -53,9 +53,9 @@ def download_stock_data(
         DataFrame berisi data historis saham.
     """
 
-    print(f"Mengambil data saham: {ticker}")
-    print(f"Periode mulai: {start_date}")
-    print(f"Periode akhir: {end_date if end_date else 'data terbaru'}")
+    logger.info(f"Mengambil data saham: {ticker}")
+    logger.info(f"Periode mulai: {start_date}")
+    logger.info(f"Periode akhir: {end_date if end_date else 'data terbaru'}")
 
     data = yf.download(
         tickers=ticker,
@@ -101,9 +101,9 @@ def download_stock_data(
         # Simpan ke CSV
         data.to_csv(file_path, index=False)
 
-        print(f"Data berhasil disimpan ke: {file_path}")
+        logger.info(f"Data berhasil disimpan ke: {file_path}")
         
-    print(f"Jumlah baris data: {len(data)}")
+    logger.info(f"Jumlah baris data: {len(data)}")
 
     return data
 

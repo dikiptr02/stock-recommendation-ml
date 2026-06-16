@@ -37,7 +37,7 @@ def get_model_info():
             detail={
                 "status": "error",
                 "message": "Failed to load model information.",
-                "error": [
+                "errors": [
                     {
                         "field": None,
                         "message": str(error),

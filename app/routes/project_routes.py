@@ -25,7 +25,6 @@ def project_info():
             "Menampilkan informasi model baseline",
             "Menampilkan ringkasan evaluasi model",
             "Prediksi otomatis berdasarkan ticker saham",
-            "Prediksi otomatis berdasarkan ticker saham",
             "Batch prediction untuk beberapa ticker",
             "Dokumentasi interaktif melalui Swagger UI",
         ],
@@ -86,8 +85,7 @@ def docs_summary():
             "atau frontend dashboard."
         ),
         "future_development": [
-            "Menambahkan automated testing untuk endpoint API",
-            "Menambahkan logging",
+            "Menambahkan logging terstruktur",
             "Meningkatkan performa model machine learning",
             "Menambahkan backtesting",
             "Menyimpan hasil prediksi ke database",

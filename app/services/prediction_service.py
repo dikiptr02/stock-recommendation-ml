@@ -11,7 +11,7 @@ from app.schemas.prediction_schema import (
 from app.services.model_loader import model_loader
 
 
-def _load_pipeline_function():
+def _load_pipeline_functions():
     """
     Lazy import untuk pipeline data saham.
 

@@ -20,7 +20,30 @@ Version
 - v1.4.1: API Cleanup, Validation, and Consistency
 - v1.4.2: Project Cleanup, Documentation Sync, and Minor API Fixes
 - v1.5.0: Automated Testing and API Reliability
+- v1.6.0: Bug Fixes, Stability & Code Quality
 
+
+## [v1.6.0] - Bug Fixes, Stability & Code Quality
+
+### Fixed
+
+* Memperbaiki typo nama fungsi `_load_pipeline_function` menjadi `_load_pipeline_functions` di `prediction_service.py` — sebelumnya menyebabkan `NameError` saat endpoint `/api/v1/predict/ticker` dan `/api/v1/predict/batch` dipanggil.
+* Memperbaiki inkonsistensi key error response pada `GET /api/v1/model-info` dari `"error"` menjadi `"errors"` agar sesuai kontrak API yang distandarkan sejak v1.4.1.
+* Memperbaiki pembuatan kolom duplikat `date` di `feature_engineering.py` — konversi datetime kini dilakukan in-place pada kolom `Date`.
+* Memperbaiki duplikat entry pada `main_features` di `project_routes.py`.
+* Memperbarui `future_development` pada `/docs-summary` agar mencerminkan status project terkini.
+
+### Improved
+
+* Mengganti semua `print()` di `preprocessing.py`, `feature_engineering.py`, dan `data_collection.py` dengan modul `logging` standar Python.
+* Menambahkan validator format ticker pada `PredictionTickerRequest` dan `BatchPredictionRequest` agar input tidak valid ditolak lebih awal dengan pesan error yang informatif.
+* Menambahkan `startup_event` di `main.py` agar model di-load saat server boot, bukan saat request pertama.
+* Menambahkan dokumentasi asumsi implementasi RSI (Simple Moving Average) pada docstring `calculate_rsi()` di `feature_engineering.py`.
+
+### Testing
+
+* Menambahkan `test_ticker_endpoint.py` — test untuk endpoint `/api/v1/predict/ticker` mencakup valid input, format ticker tidak valid, string kosong, dan period tidak valid.
+* Menambahkan `test_batch_endpoint.py` — test untuk endpoint `/api/v1/predict/batch` mencakup valid input, partial fail, format ticker tidak valid, list kosong, dan period tidak valid.
 
 ## [v1.5.0] - Automated Testing and API Reliability
 

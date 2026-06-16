@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.routes.prediction import router as prediction_router
 from app.core.config import APP_NAME, APP_VERSION
+from app.services.model_loader import model_loader
 from app.routes.evaluation_routes import router as evaluation_router
 from app.routes.model_routes import router as model_router
 from app.routes.project_routes import router as project_router
@@ -15,6 +16,12 @@ app = FastAPI(
     version=APP_VERSION,
 )
 
+@app.on_event("startup")
+async def startup_event():
+    """
+    Load model saat server boot agar request pertama tidak lambat.
+    """
+    model_loader.load_model()
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(

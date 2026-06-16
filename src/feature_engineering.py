@@ -14,6 +14,9 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 REQUIRED_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Volume"]
 
@@ -36,6 +39,16 @@ def calculate_rsi(data: pd.DataFrame, window: int = 14) -> pd.Series:
     -------
     pd.Series
         Nilai RSI.
+
+    Notes
+    ------
+    Implementasi ini menggunakan Simple Moving Average (SMA) untuk menghitung
+    avg_gain dan avg_loss - bukan Wilder's Smoothed Moving Average (WSMA)
+    yang umum dipakai di platform charting seperti TradingView atau Bloomberg.
+
+    Model v1.0.1 dilatih menggunakan metode SMA ini.
+    JANGAN ubah ke WSMA tanpa melakukan training ulang model terlebih dahulu,
+    karena akan menghasilkan nilai RSI yang berbeda dari data training.
     """
 
     delta = data["Close"].diff()
@@ -79,7 +92,7 @@ def create_features(
     if input_data is not None:
         # Data diproses di memory agar endpoint tidak membuat file CSV baru setiap dipanggil
         data = input_data.copy()
-        print("Memproses data dari DataFrame memori")
+        logger.info("Memproses data dari DataFrame memori")
         input_stem = "memory_data"
     else:
         if input_path is None:
@@ -89,11 +102,11 @@ def create_features(
         if not input_file.exists():
             raise FileNotFoundError(f"File tidak ditemukan: {input_path}")
         
-        print(f"Membaca data bersih dari: {input_path}")
+        logger.info(f"Membaca data bersih dari: {input_path}")
         data = pd.read_csv(input_file)
         input_stem = input_file.stem
 
-    print(f"Jumlah data sebelum feature engineering: {len(data)} baris")
+    logger.info(f"Jumlah data sebelum feature engineering: {len(data)} baris")
 
     # Validasi kolom wajib
     missing_columns = set(REQUIRED_COLUMNS) - set(data.columns)
@@ -102,7 +115,7 @@ def create_features(
         raise ValueError(f"Kolom wajib tidak ditemukan: {missing_columns}")
     
     # Pastikan Date bertipe datetime
-    data["date"] = pd.to_datetime(data["Date"], errors="coerce")
+    data["Date"] = pd.to_datetime(data["Date"], errors="coerce")
 
     # Urutkan data berdasarkan tanggal
     data = data.sort_values(by="Date").reset_index(drop=True)
@@ -132,7 +145,7 @@ def create_features(
     # Hapus baris yang memiliki missing value akibat rolling calculation
     data = data.dropna().reset_index(drop=True)
 
-    print(f"Jumlah data setelah feature engineering: {len(data)} baris")
+    logger.info(f"Jumlah data setelah feature engineering: {len(data)} baris")
 
     if save_file:
         # Buat folder output jika belum ada
@@ -146,7 +159,7 @@ def create_features(
         # Simpan data dengan fitur
         data.to_csv(output_file, index=False)
 
-        print(f"Data fitur berhasil disimpan ke: {output_file}")
+        logger.info(f"Data fitur berhasil disimpan ke: {output_file}")
 
     return data
 

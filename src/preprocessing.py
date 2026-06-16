@@ -14,6 +14,9 @@ Output:
 from pathlib import Path
 
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
 
 REQUIRED_COLUMNS = ["Date", "Open", "High", "Low", "Close", "Volume"]
 
@@ -44,7 +47,7 @@ def preprocess_stock_data(
     if input_data is not None:
         # Data diproses di memory agar endpoint tidak membuat file CSV baru setiap dipanggil
         data = input_data.copy()
-        print("Memproses data dari DataFrame memori")
+        logger.info("Memproses data dari DataFrame memori")
         input_stem = "memory_data"
     else:
         if input_path is None:
@@ -54,11 +57,11 @@ def preprocess_stock_data(
         if not input_file.exists():
             raise FileNotFoundError(f"File tidak ditemukan: {input_path}")
         
-        print(f"Membaca data dari: {input_path}")
+        logger.info(f"Membaca data dari: {input_path}")
         data = pd.read_csv(input_file)
         input_stem = input_file.stem
 
-    print(f"Jumlah data awal: {len(data)} baris")
+    logger.info(f"Jumlah data awal: {len(data)} baris")
 
     # Validasi kolom wajib
     missing_columns = set(REQUIRED_COLUMNS) - set(data.columns)
@@ -91,7 +94,7 @@ def preprocess_stock_data(
     # Urutkan berdasarkan tanggal
     data = data.sort_values(by="Date").reset_index(drop=True)
 
-    print(f"Jumlah data setelah dibersihkan: {len(data)} baris")
+    logger.info(f"Jumlah data setelah dibersihkan: {len(data)} baris")
 
     if save_file:
         # Buat folder output jika belum ada
@@ -105,7 +108,7 @@ def preprocess_stock_data(
         # Simpan data bersih
         data.to_csv(output_file, index=False)
 
-        print(f"Data bersih berhasil disimpan ke: {output_file}")
+        logger.info(f"Data bersih berhasil disimpan ke: {output_file}")
 
     return data
 
