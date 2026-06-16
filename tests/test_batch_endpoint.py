@@ -63,7 +63,7 @@ MOCK_BATCH_PARTIAL_FAIL = {
 
 def test_predict_batch_valid(client):
     with patch(
-        "app.api.routes.prediction.predict_batch",
+        "app.routes.prediction_routes.predict_batch",
         return_value=MOCK_BATCH_RESULT,
     ):
         response = client.post(
@@ -82,7 +82,7 @@ def test_predict_batch_valid(client):
 
 def test_predict_batch_partial_fail(client):
     with patch(
-        "app.api.routes.prediction.predict_batch",
+        "app.routes.prediction_routes.predict_batch",
         return_value=MOCK_BATCH_PARTIAL_FAIL,
     ):
         response = client.post(

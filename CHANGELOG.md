@@ -21,7 +21,26 @@ Version
 - v1.4.2: Project Cleanup, Documentation Sync, and Minor API Fixes
 - v1.5.0: Automated Testing and API Reliability
 - v1.6.0: Bug Fixes, Stability & Code Quality
+- v1.7.0: Refactor Architecture & Routing
 
+
+## [v1.7.0] - Refactor Architecture & Routing
+
+### Changed
+
+* Menyatukan dua struktur routing yang terpisah (`app/api/routes/` dan `app/routes/`) menjadi satu struktur konsisten di `app/routes/`.
+* Memindahkan dan merename `app/api/routes/prediction.py` menjadi `app/routes/prediction_routes.py`.
+* Memperbarui import path di `app/main.py` agar konsisten dengan semua router lainnya.
+* Memperbarui mock path di `tests/test_ticker_endpoint.py` dan `tests/test_batch_endpoint.py`.
+* Memperbarui import di `tests/test_error_handling.py`.
+* Menghapus folder `app/api/` yang sudah tidak digunakan.
+
+### Notes
+
+* Tidak ada perubahan pada endpoint URL — semua route tetap sama.
+* Tidak ada perubahan pada model machine learning atau file `.pkl`.
+* Tidak ada perubahan pada schemas, services, atau src pipeline.
+* Fokus update adalah internal code organization dan maintainability.
 
 ## [v1.6.0] - Bug Fixes, Stability & Code Quality
 

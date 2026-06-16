@@ -3,7 +3,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from app.api.routes.prediction import router as prediction_router
+from app.routes.prediction_routes import router as prediction_router
 from app.core.config import APP_NAME, APP_VERSION
 from app.services.model_loader import model_loader
 from app.routes.evaluation_routes import router as evaluation_router

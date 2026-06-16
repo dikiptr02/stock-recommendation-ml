@@ -1,4 +1,4 @@
-from app.api.routes import prediction as prediction_route
+from app.routes import prediction_routes as prediction_route
 from app.services.model_loader import ModelLoaderError
 
 

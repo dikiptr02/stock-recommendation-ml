@@ -24,7 +24,7 @@ MOCK_TICKER_RESULT = {
 
 def test_predict_ticker_valid(client):
     with patch(
-        "app.api.routes.prediction.predict_by_ticker",
+        "app.routes.prediction_routes.predict_by_ticker",
         return_value=MOCK_TICKER_RESULT,
     ):
         response = client.post(

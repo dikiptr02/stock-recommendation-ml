@@ -1,10 +1,10 @@
-# Stock Recommendation ML (v1.6.0)
+# Stock Recommendation ML (v1.7.0)
 
 Project ini adalah project pembelajaran Machine Learning *end-to-end* untuk membuat rekomendasi saham harian (Buy, Hold, Sell) berdasarkan data historis harga saham dan indikator teknikal. Saat ini, project telah dilengkapi dengan Backend API Interaktif (FastAPI) yang mampu melayani prediksi saham secara *real-time* maupun dalam jumlah banyak (*batch*), dengan kode yang lebih stabil, terstruktur, dan siap produksi.
 
 > **Catatan Penting:** Project ini ditujukan secara eksklusif untuk pembelajaran dan portofolio data science/machine learning. Output prediksi **bukan** merupakan nasihat investasi finansial.
 
-## Fitur Utama saat ini (v1.6.0)
+## Fitur Utama saat ini (v1.7.0)
 
 1. **Prediction by Ticker API**: Memprediksi rekomendasi saham secara instan bermodalkan kode ticker (contoh: `BBCA.JK`). Sistem akan secara otomatis mengunduh data terbaru dan memproses *feature engineering* secara *in-memory*.
 2. **Batch Prediction API**: Memproses banyak ticker saham sekaligus secara berurutan dan kebal dari *crash* (*fault-tolerant*) jika ada ticker yang *invalid* atau tidak ditemukan datanya.
@@ -14,32 +14,19 @@ Project ini adalah project pembelajaran Machine Learning *end-to-end* untuk memb
 
 Untuk melihat riwayat lengkap perkembangan fitur dan *bug fix* dari versi awal hingga terkini, silakan baca **[CHANGELOG.md](CHANGELOG.md)**.
 
-## Version v1.6.0 — Bug Fixes, Stability & Code Quality
+## Version v1.7.0 — Refactor Architecture & Routing
 
-Versi ini berfokus pada perbaikan bug kritis, peningkatan stabilitas backend, dan kualitas kode. Tidak ada perubahan pada model machine learning maupun proses training.
+Versi ini berfokus pada perapian struktur internal kode. Tidak ada perubahan pada endpoint API, model machine learning, maupun proses training.
 
-### Bug Fixes
+### Changes
 
-* Memperbaiki typo nama fungsi `_load_pipeline_function` menjadi `_load_pipeline_functions` di `prediction_service.py` — sebelumnya menyebabkan `NameError` saat endpoint `/api/v1/predict/ticker` dan `/api/v1/predict/batch` dipanggil.
-* Memperbaiki inkonsistensi key error response pada `GET /api/v1/model-info` dari `"error"` menjadi `"errors"` agar sesuai kontrak API yang distandarkan sejak v1.4.1.
-* Memperbaiki pembuatan kolom duplikat `date` di `feature_engineering.py` — konversi datetime kini dilakukan in-place pada kolom `Date`.
-* Memperbaiki duplikat entry pada `main_features` di `project_routes.py`.
-
-### Improvements
-
-* Mengganti semua `print()` di `preprocessing.py`, `feature_engineering.py`, dan `data_collection.py` dengan modul `logging` standar Python.
-* Menambahkan validator format ticker pada `PredictionTickerRequest` dan `BatchPredictionRequest` agar input tidak valid ditolak lebih awal dengan pesan error yang informatif.
-* Menambahkan `startup_event` di `main.py` agar model di-load saat server boot, bukan saat request pertama.
-* Menambahkan dokumentasi asumsi implementasi RSI (Simple Moving Average) pada docstring `calculate_rsi()` di `feature_engineering.py`.
-
-### Test Coverage
-
-* Menambahkan `test_ticker_endpoint.py` — mencakup valid input, format ticker tidak valid, string kosong, dan period tidak valid.
-* Menambahkan `test_batch_endpoint.py` — mencakup valid input, partial fail, format ticker tidak valid, list kosong, dan period tidak valid.
+* Menyatukan dua struktur routing yang terpisah (`app/api/routes/` dan `app/routes/`) menjadi satu struktur konsisten di `app/routes/`.
+* Memindahkan `app/api/routes/prediction.py` menjadi `app/routes/prediction_routes.py`.
+* Menghapus folder `app/api/` yang sudah tidak digunakan.
 
 ### Notes
 
-Versi ini tidak mengubah model machine learning, file `.pkl`, proses training, maupun label rekomendasi. Fokus update berada pada stabilitas, konsistensi API, logging, dan maintainability kode.
+Versi ini tidak mengubah endpoint URL, model machine learning, file `.pkl`, schemas, services, maupun src pipeline. Fokus update adalah internal code organization dan maintainability.
 
 
 ## Dokumentasi Modul Spesifik
